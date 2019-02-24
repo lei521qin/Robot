@@ -1,0 +1,12 @@
+.idea/
+*/*.iml
+target/
+*/target/
+.settings/
+*/.settings/
+.classpath
+.project
+*.iml
+*/node_modules
+*/disconf.properties
+*/log4j.xml

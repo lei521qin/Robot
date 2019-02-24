@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+
+    <bean id="iProductRankListService" class="com.biyao.robot.dubbo.service.user.IRobotUserListServiceImpl"/>
+
+    <util:properties id="dubboConfig" location="classpath:prop/dubbo.properties"/>
+
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+    <dubbo:application name="#{dubboConfig['dubbo.application.name']}"/>
+
+    <!-- 使用zookeeper注册中心暴露服务地址 -->
+    <dubbo:registry protocol="zookeeper" address="#{dubboConfig['dubbo.service.registry.address']}" timeout="50000"/>
+
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="-1" charset="UTF-8" payload="16777216" threads="200"/>
+
+
+    <dubbo:service protocol="dubbo"
+                   interface="com.biyao.robot.client.user.service.IRobotUserListService"
+                   ref="iProductRankListService"
+                   version="#{dubboConfig['dubbo.service.registry.version']}" loadbalance="random" retries="0"
+                   group="#{dubboConfig['dubbo.server.group']}"
+                   timeout="#{dubboConfig['dubbo.service.registry.timeout']}"/>
+
+</beans>

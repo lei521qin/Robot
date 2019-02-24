@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+       default-autowire="byName">
+
+    <util:properties id="redisConfig" location="classpath:prop/redis.properties"/>
+
+    <bean id="redisService" class="com.by.bimdb.service.impl.RedisSentinelServiceImpl">
+        <!-- 应用ID -->
+        <constructor-arg index="0" value="#{redisConfig['redis.appId']}"/>
+        <!-- 集群ID -->
+        <constructor-arg index="1" value="#{redisConfig['redis.clusterId']}"/>
+        <!-- 哨兵host 多个用;号隔开 -->
+        <constructor-arg index="2" value="#{redisConfig['redis.sentinel']}"/>
+        <!-- 主节点名 -->
+        <constructor-arg index="3" value="#{redisConfig['redis.masterName']}"/>
+        <!-- 单个应用中的连接池取连接时最大等待时间，单位：ms -->
+        <constructor-arg index="4" value="#{redisConfig['redis.maxWaitMillis']}"/>
+        <!-- 单个应用中的连接池最大连接数 -->
+        <constructor-arg index="5" value="#{redisConfig['redis.maxTotal']}"/>
+        <!-- 单个应用中的连接池最小空闲数 -->
+        <constructor-arg index="6" value="#{redisConfig['redis.minIdle']}"/>
+        <!-- 单个应用中的连接池最大空闲数 -->
+        <constructor-arg index="7" value="#{redisConfig['redis.maxIdle']}"/>
+        <!-- 设置redis connect request response timeout 单位:ms -->
+        <constructor-arg index="8" value="#{redisConfig['redis.timeout']}"/>
+    </bean>
+</beans>
